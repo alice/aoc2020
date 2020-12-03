@@ -3,27 +3,33 @@ const rl = readline.createInterface({
   input: process.stdin,
 });
 
-let passwords = [];
 let valid_passwords = [];
 rl.on('line', (line) => {
     let password = parsePassword(line);
-    passwords.push(password);
 });
 
 function parsePassword(line) {
     const re = /(\d+)-(\d+) ([a-z]): ([a-z]+)/;
     const result = line.match(re);
-    const lower_bound = result[1];
-    const upper_bound = result[2];
+    const n1 = Number.parseInt(result[1]);
+    const n2 = Number.parseInt(result[2]);
     const letter = result[3];
     const text = result[4];
+    /*
     let count = Array.from(text).reduce((acc, c) => c === letter ? acc + 1 : acc, 0);
-    if (count >= lower_bound && count <= upper_bound)
+    if (count >= n1 && count <= n2)
 	valid_passwords.push(text);
-    passwords.push({lower_bound, upper_bound, letter, text});
+    */
+
+    if (xor(text[n1 - 1] == letter, text[n2 - 1] == letter))
+	valid_passwords.push(text);
+}
+
+function xor(a, b) {
+    return (a || b) && !(a && b);
 }
 
 rl.on('close', () => {
-    console.log(valid_passwords.length, "valid passwords");
+    console.log(valid_passwords.length, "valid passwords", valid_passwords);
 });
 
