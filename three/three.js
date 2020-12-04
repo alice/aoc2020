@@ -5,20 +5,7 @@ const rl = readline.createInterface({
 
 let grid = [];
 rl.on('line', (line) => {
-    let row = [];
-    for (const c of line) {
-	switch (c) {
-	case '.':
-	    row.push(false);
-	    break;
-	case '#':
-	    row.push(true);
-	    break;
-	default:
-	    throw "invalid char: " + c;
-	}
-    }
-    grid.push(row);
+    grid.push(line);
 });
 
 rl.on('close', () => {
@@ -35,11 +22,11 @@ function test(right, down) {
     let [r, c] = [0, 0];
     let trees = 0;
     while (r < grid.length) {
-	c %= grid[0].length;
-	if (grid[r][c])
+	if (grid[r][c] === '#')
 	    trees++;
 	r += down;
 	c += right;
+	c %= grid[0].length;
     }
     console.log({right, down}, trees, "trees");
     return trees;
