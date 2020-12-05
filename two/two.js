@@ -10,11 +10,7 @@ rl.on('line', (line) => {
 
 function parsePassword(line) {
     const re = /(\d+)-(\d+) ([a-z]): ([a-z]+)/;
-    const result = line.match(re);
-    const n1 = Number.parseInt(result[1]);
-    const n2 = Number.parseInt(result[2]);
-    const letter = result[3];
-    const text = result[4];
+    const [_, n1, n2, letter, text] = line.match(re);
     /*
     let count = Array.from(text).reduce((acc, c) => c === letter ? acc + 1 : acc, 0);
     if (count >= n1 && count <= n2)
