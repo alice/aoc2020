@@ -20,6 +20,6 @@ const groups = data.split('\n\n').map((group) => {
     return intersection;
 });
 
-let count = groups.reduce((acc, group) =>  acc + group.length, 0);
+let count = groups.flat().length;
 console.log({count});
 
