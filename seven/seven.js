@@ -11,11 +11,13 @@ class Bag {
     constructor(name, inner_list) {
 	this.name = name;
 	this.inner = [];
+	this.inner_counts = new Map();
 	this.outer = [];
 	for (let inner of inner_list) {
 	    const match = inner.match(inner_regex);
-	    if (match.groups.number) {
+	    if (match.groups.bag) {
 		this.inner.push(match.groups.bag);
+		this.inner_counts.set(match.groups.bag, Number.parseInt(match.groups.number));
 	    }
 	}
     }
@@ -56,5 +58,17 @@ while (to_walk.length > 0) {
 	to_walk.push(...bag.outer);
 }
 
-console.log({contains_shiny_gold});
-console.log(contains_shiny_gold.size);
+console.log(contains_shiny_gold.size, "contain shiny gold");
+
+function total_contains(bag_name) {
+    const bag = bags.get(bag_name);
+    let total = 1; // include the bag itself
+    for (let [name, count] of bag.inner_counts) {
+	const inner_bag_contains = total_contains(name);
+	total += count * inner_bag_contains;
+    }
+    return total;
+}
+
+const shiny_gold_contains = total_contains("shiny gold bag") - 1; // subtract shiny gold
+console.log({shiny_gold_contains});
