@@ -12,7 +12,23 @@ for (const line of lines) {
     program.push({op, arg: Number.parseInt(arg)});
 }
 
-run(program);
+for (let i = 0; i < program.length; i++) {
+    const instruction = program[i];
+    switch (instruction.op) {
+    case "acc":
+	continue;
+    case "jmp":
+	instruction.op = "nop";
+        run(program);
+	instruction.op = "jmp";
+	break;
+    case "nop":
+	instruction.op = "jmp";
+	run(program);
+	instruction.op = "nop";
+	break;
+    }
+}
 
 function run(program) {
     let p = 0;
@@ -23,26 +39,34 @@ function run(program) {
     function next(jmp) {
 	if (already_run.has(jmp)) {
 	    console.log({jmp, acc});
-	    process.exit()
+	    return false;
 	}
 	p = jmp;
 	return true;
     }
 
     while (true) {
+	if (p >= program.length) {
+	    console.log({acc});
+	    process.exit();
+	}
+	
 	already_run.add(p);
 
 	const instruction = program[p];
 	switch (instruction.op) {
 	case "nop":
-	    next(p + 1);
+	    if (!next(p + 1))
+		return false;
 	    break;
 	case "acc":
 	    acc += instruction.arg;
-	    next(p + 1);
+	    if (!next(p + 1))
+		return false;
 	    break;
 	case "jmp":
-	    next(p + instruction.arg);
+	    if (!next(p + instruction.arg))
+		return false;
 	    break;
 	}
     }
