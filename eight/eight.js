@@ -38,7 +38,6 @@ function run(program) {
 
     function next(jmp) {
 	if (already_run.has(jmp)) {
-	    console.log({jmp, acc});
 	    return false;
 	}
 	p = jmp;
