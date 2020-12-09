@@ -6,6 +6,8 @@ const rl = readline.createInterface({
 const PREAMBLE = 25;
 
 let previous = [];
+let all_numbers = [];
+
 rl.on('line', (line) => {
     if (line === "") {
 	console.log("no sum found");
@@ -13,6 +15,7 @@ rl.on('line', (line) => {
     }
 
     let number = Number.parseInt(line);
+    all_numbers.push(number);
 
     if (previous.length < PREAMBLE) {
 	previous.push(number);
@@ -21,6 +24,11 @@ rl.on('line', (line) => {
 
     if (!isSum(number)) {
 	console.log(`${number} is not a sum`);
+	let contiguous = findContiguous(number);
+	console.log({contiguous});
+	let min = Math.min(...contiguous);
+	let max = Math.max(...contiguous);
+	console.log(`sum: ${min + max}`);
 	process.exit();
     }
     previous.shift();
@@ -36,4 +44,21 @@ function isSum(number) {
     return false;
 }
     
+function findContiguous(number) {
+    let contiguous = [];
+    let copy = all_numbers.slice();
+    while (true) {
+	while (sum(contiguous) < number)
+	    contiguous.push(copy.shift());
+	if (sum(contiguous) == number)
+	    return contiguous;
+	while (sum(contiguous) > number)
+	    contiguous.shift();;
+    }
+}
 
+function sum(array) {
+    return array.reduce((acc, curr) => acc + curr, 0);
+}
+
+			
