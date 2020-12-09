@@ -10,7 +10,7 @@ let all_numbers = [];
 
 rl.on('line', (line) => {
     if (line === "") {
-	console.log("no sum found");
+	console.log("no weakness found");
 	process.exit();
     }
 
@@ -25,7 +25,6 @@ rl.on('line', (line) => {
     if (!isSum(number)) {
 	console.log(`${number} is not a sum`);
 	let contiguous = findContiguous(number);
-	console.log({contiguous});
 	let min = Math.min(...contiguous);
 	let max = Math.max(...contiguous);
 	console.log(`sum: ${min + max}`);
@@ -47,13 +46,13 @@ function isSum(number) {
 function findContiguous(number) {
     let contiguous = [];
     let copy = all_numbers.slice();
-    while (true) {
+    while (copy.length > 0) {
 	while (sum(contiguous) < number)
 	    contiguous.push(copy.shift());
 	if (sum(contiguous) == number)
 	    return contiguous;
 	while (sum(contiguous) > number)
-	    contiguous.shift();;
+	    contiguous.shift();
     }
 }
 
