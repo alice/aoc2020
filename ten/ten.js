@@ -5,19 +5,15 @@ const WALL = 0;
 let adapters = data.split('\n').map((line) => Number.parseInt(line));
 adapters.pop(); // final newline/empty line
 adapters.sort((a, b) => a - b);
-adapters.unshift(WALL);
 
 const max_adapter = adapters[adapters.length - 1];
 const device = max_adapter + 3;
 adapters.push(device);
 
 let diffs = [];
-let adapters_copy = adapters.slice();
-let prev_adapter = adapters_copy.shift();
-while (adapters_copy.length > 0) {
-    const adapter = adapters_copy.shift();
-    const diff = adapter - prev_adapter;
-    diffs.push(diff);
+let prev_adapter = WALL;
+for (let adapter of adapters) {
+    diffs.push(adapter - prev_adapter);
     prev_adapter = adapter;
 }
 
@@ -27,6 +23,9 @@ let ones = diffs.indexOf(3);
 let threes = diffs.length - ones;
 let product = ones * threes;
 console.log({ones, threes, product});
+
+// -- part 2 --
+adapters.unshift(WALL);
 
 let partial_num_paths = new Map();
 for (let adapter of adapters)
