@@ -45,10 +45,15 @@ function isSum(number) {
     
 function findContiguous(number) {
     let contiguous = [];
-    let copy = all_numbers.slice();
-    while (copy.length > 0) {
-	while (sum(contiguous) < number)
-	    contiguous.push(copy.shift());
+    let it = all_numbers.values();
+    let done = false;
+    while (!done) {
+	while (sum(contiguous) < number) {
+	    let {value, done} = it.next();
+	    if (done)
+		break;
+	    contiguous.push(value);
+	}
 	if (sum(contiguous) == number)
 	    return contiguous;
 	while (sum(contiguous) > number)
@@ -59,5 +64,3 @@ function findContiguous(number) {
 function sum(array) {
     return array.reduce((acc, curr) => acc + curr, 0);
 }
-
-			
