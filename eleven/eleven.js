@@ -13,7 +13,6 @@ for (let [row, str] of prev_map.entries())
     prev_map[row] = str.split('');
 
 let map = step(prev_map);
-//logMap({prev_map, map});
 
 let MAX = 1000;
 let count = 0;
@@ -38,7 +37,7 @@ function step(prev_map) {
 	    let neighbours = countNeighbours(row, col, prev_map);
 	    if (neighbours === 0) {
 		map[row].push(OCCUPIED_SEAT);
-	    } else if (neighbours >= 4) {
+	    } else if (neighbours >= 5) {
 		map[row].push(EMPTY_SEAT);
 	    } else {
 		map[row].push(prev_map[row][col]);
@@ -50,18 +49,23 @@ function step(prev_map) {
 
 function countNeighbours(row, col, prev_map) {
     let count = 0;
-    for (let r = row - 1; r <= row + 1; r++) {
-	if (r < 0 || r >= prev_map.length)
-	    continue;
-
-	for (let c = col - 1; c <= col + 1; c++) {
-	    if (c < 0 || c >= prev_map[0].length)
+    for (let dr = -1; dr <= 1; dr++) {
+	for (let dc = -1; dc <= 1; dc++) {
+	    if (dr === 0 && dc === 0)
 		continue;
-	    if (r === row && c === col)
-		continue;
-
-	    if (prev_map[r][c] === OCCUPIED_SEAT)
-		count++;
+	    let r = row + dr;
+	    let c = col + dc;
+	    while (r >= 0 && r < prev_map.length &&
+		   c >= 0 && c < prev_map[0].length) {
+		if (prev_map[r][c] === FLOOR) {
+		    r += dr;
+		    c += dc;
+		    continue;
+		}
+		if (prev_map[r][c] === OCCUPIED_SEAT)
+		    count++;
+		break;
+	    }
 	}	
     }
     return count;
