@@ -89,6 +89,3 @@ function logMap(obj) {
 	console.log(str);
     }
 }
-
-
-	
