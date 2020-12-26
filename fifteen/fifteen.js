@@ -1,22 +1,28 @@
-const STARTING_VALUES = [15,12,0,14,3,1];
+let STARTING_VALUES = [15,12,0,14,3,1];
 
-let seen_values = [];
+let seen_values = new Map();
+let num_seen = 0;
+let last_value = STARTING_VALUES.shift();
 
-while (seen_values.length < 2020) {
-    if (seen_values.length < STARTING_VALUES.length) {
-	seen_values.unshift(STARTING_VALUES[seen_values.length]);
-	console.log(seen_values.length + ': ' + seen_values[0]);
+while (true) {
+    num_seen++;
+    if (STARTING_VALUES.length > 0) {
+	seen_values.set(last_value, num_seen);
+	last_value = STARTING_VALUES.shift();
 	continue;
     }
 
-    let last_value = seen_values.shift();
-    let previous_index = seen_values.indexOf(last_value)
-    seen_values.unshift(last_value);
-    if (previous_index === -1)
-	seen_values.unshift(0);
-    else
-	seen_values.unshift(previous_index + 1);
-    console.log(seen_values.length + ': ' + seen_values[0]);
+    let value = 0;
+    if (seen_values.has(last_value))
+	value = num_seen - seen_values.get(last_value)
+
+    seen_values.set(last_value, num_seen);
+    if (num_seen % 10000 == 0)
+	console.log(num_seen + ': ' + last_value);
+
+    if (num_seen == 30000000)
+	break;
+    last_value = value;
 }
-    
-console.log(seen_values[0]);
+
+console.log(num_seen + ': ' + last_value);
