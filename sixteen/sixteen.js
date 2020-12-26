@@ -25,10 +25,14 @@ let nearby_tickets = data_segments[2].split('\n')
 	 .map((s) => Number.parseInt(s)));
 nearby_tickets.pop(); // empty line
 
-let scanning_error_rate = 0;;
-for (let ticket of nearby_tickets)
-    scanning_error_rate += errorRate(ticket);
-
+let scanning_error_rate = 0;
+let good_tickets = [];
+for (let ticket of nearby_tickets) {
+    let error_rate = errorRate(ticket);
+    scanning_error_rate += errorRate;
+    if (error_rate === 0)
+	good_tickets.push(ticket);
+}
 
 console.log(scanning_error_rate);
 
