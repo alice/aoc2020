@@ -37,6 +37,8 @@ if (argv._.includes('one')) {
     require('./fifteen/fifteen.js');
 } else if (argv._.includes('sixteen')) {
     require('./sixteen/sixteen.js');
+} else if (argv._.includes('seventeen')) {
+    require('./seventeen/seventeen.js');
 } else {
     console.log('yargs: ' + JSON.stringify(argv));
     console.log('args: ' + JSON.stringify(process.argv));
