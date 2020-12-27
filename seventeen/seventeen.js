@@ -18,7 +18,7 @@ class Grid {
 	    for (let [y, char] of row.split('').entries()) {
 		if (char !== '#')
 		    continue;
-		const coords = {x, y, z: 0};
+		const coords = {x, y, z: 0, w: 0};
 		this._grid.add(JSON.stringify(coords));
 	    }
 	}
@@ -64,12 +64,15 @@ function neighbours(coords) {
     for (let dx = -1; dx <= 1; dx++) {
 	for (let dy = -1; dy <= 1; dy++) {
 	    for (let dz = -1; dz <= 1; dz++) {
-		if (dx === 0 && dy === 0 && dz === 0)
-		    continue;
-		let x = coords.x + dx;
-		let y = coords.y + dy;
-		let z = coords.z + dz;
-		neighbours.push({x, y, z});
+		for (let dw = -1; dw <= 1; dw++) {
+		    if (dx === 0 && dy === 0 && dz === 0 && dw == 0)
+			continue;
+		    let x = coords.x + dx;
+		    let y = coords.y + dy;
+		    let z = coords.z + dz;
+		    let w = coords.w + dw;
+		    neighbours.push({x, y, z, w});
+		}
 	    }
 	}
     }
